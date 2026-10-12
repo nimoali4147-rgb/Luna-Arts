@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+
+    <title>{% block title %}Luma Art | Photo Gallery{% endblock title %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-stone-50 text-stone-900 min-h-screen flex flex-col">
+
+    <nav class="bg-[#171717] text-white">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+
+            <a href="{% url 'home' %}" class="text-2xl font-bold font-display">
+                Luma Art  <i class="fa-regular fa-star text-amber-400"></i>
+            </a>
+
+            <div class="flex items-center gap-6 text-sm">
+                <a href="{% url 'home' %}" class="hover:text-gold-400">Home</a>
+                <a href="#gallery" class="hover:text-gold-400">Gallery</a>
+                <a href="/admin/" class="hover:text-gold-400">Admin</a>
+            </div>
+
+        </div>
+    </nav>
+
+    <main class="flex-1">
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer class="bg-[#171717] text-gray-400 mt-16">
+        <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>© 2026 Luma Art. All rights reserved.</p>
+            <p class="text-sm">Discover. Explore. Create.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

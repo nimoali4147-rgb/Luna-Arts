@@ -1,0 +1,64 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | Luma Art{% endblock title %}
+
+{% block content %}
+
+<section class="bg-[#171717] text-white">
+    <div class="max-w-7xl mx-auto px-6 py-24 md:py-32">
+
+        <p class="text-gold-400 uppercase tracking-[0.25em] mb-6">
+            Welcome to Luma Art
+        </p>
+
+        <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            Discover the beauty
+            <span class="text-gold-400"> through art</span>
+        </h1>
+
+        <p class="mt-6 text-gray-400 text-lg leading-8 max-w-2xl">
+            Explore beautiful photographs, creative portraits,
+            and inspiring artworks from talented creators.
+            Find the stories behind every image.
+        </p>
+
+        <a href="#gallery"
+           class="inline-block mt-9 bg-gold-400 hover:bg-gold-500 text-black font-semibold px-8 py-3 rounded-md">
+            Explore Gallery →
+        </a>
+
+    </div>
+</section>
+
+<section id="gallery" class="max-w-7xl mx-auto px-6 py-20">
+
+    <p class="text-gold-600 text-sm font-semibold uppercase tracking-[0.2em]">
+        Curated Collection
+    </p>
+
+    <h2 class="font-display text-3xl md:text-4xl font-bold mt-3">
+        Explore Our Gallery
+    </h2>
+
+    <p class="mt-4 text-gray-600 max-w-2xl">
+        A collection of moments, perspectives, and creativity
+        waiting to be discovered.
+    </p>
+
+    <div class="border border-dashed border-stone-300 rounded-xl p-12 md:p-20 text-center mt-8">
+
+        <h3 class="font-display text-2xl font-bold">
+            Art is coming soon
+        </h3>
+
+        <p class="mt-3 text-gray-500">
+            Our photo collection will appear here once we connect
+            the gallery to the database.
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock content %}
