@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+
+{% block title %}Create Account | Luma Art{% endblock title %}
+
+{% block content %}
+<section class="flex min-h-[75vh] items-center justify-center px-4 py-12">
+
+    <div class="w-full max-w-md rounded-2xl border border-stone-200 bg-white p-8 shadow-sm">
+
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-stone-900">
+                Join Luma Art
+            </h1>
+
+            <p class="mt-2 text-sm text-stone-500">
+                Create an account and discover beautiful photography and art.
+            </p>
+        </div>
+
+        <form method="POST" class="space-y-5">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div>
+                    <label
+                        for="{{ field.id_for_label }}"
+                        class="mb-2 block text-sm font-medium text-stone-700"
+                    >
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                    {% if field.help_text %}
+                        <div class="mt-2 text-xs leading-5 text-stone-500">
+                            {{ field.help_text|safe }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button
+                type="submit"
+                class="w-full rounded-lg bg-stone-900 px-5 py-3 font-semibold text-white transition hover:bg-amber-700"
+            >
+                Create Account
+            </button>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-stone-600">
+            Already have an account?
+            <a
+                href="{% url 'login' %}"
+                class="font-semibold text-amber-700 hover:underline"
+            >
+                Log in
+            </a>
+        </p>
+
+    </div>
+</section>
+{% endblock content %}
