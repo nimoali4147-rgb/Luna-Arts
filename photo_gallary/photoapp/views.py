@@ -10,6 +10,12 @@ from .forms import RegisterForm
 def home(request):
     return render(request, 'home.html')
 
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    return render(request, 'profile.html')
+
 def register(request):
     return render(request, 'register.html',{'form': forms})
 
