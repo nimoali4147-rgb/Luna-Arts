@@ -1,0 +1,41 @@
+
+<nav class="flex items-center justify-between bg-gray-900 px-6 text-white py-5 md:px-12">
+    <!-- Logo -->
+    <a href="{% url 'home' %}"
+       class="text-2xl font-bold tracking-tight ">
+        Luma <span class="text-amber-600">Art</span>
+    </a>
+
+    <!-- Navigation links -->
+    <div class="flex items-center gap-5">
+        <a href="{% url 'home' %}"
+           class="text-sm font-bold transition hover:text-amber-600">
+            Home
+        </a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}"
+               class="text-sm font-bold  hover:text-amber-600">
+                Profile
+            </a>
+
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="text-sm font-bold hover:text-amber-600">
+                    Logout
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}"
+               class="text-sm font-bold hover:text-amber-600">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}"
+               class="rounded-lg bg-amber-500 px-2 py-2 text-sm font-semibold text-white transition hover:bg-amber-700">
+                Sign Up
+            </a>
+        {% endif %}
+    </div>
+</nav>
