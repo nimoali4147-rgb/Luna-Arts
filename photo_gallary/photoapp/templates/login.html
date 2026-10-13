@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Login | Luma Art{% endblock title %}
+
+{% block content %}
+<section class="flex min-h-[75vh] items-center justify-center px-4 py-12">
+
+    <div class="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-lg">
+
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-blue-900">
+                Luma Art
+            </h1>
+
+            <p class="mt-2 text-amber-800">
+                Welcome back! Please log in.
+            </p>
+        </div>
+
+        <form method="POST" class="space-y-5">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="rounded-lg bg-red-100 p-3 text-sm text-red-700">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}"
+                           class="mb-2 block font-semibold text-blue-900">
+                        {{ field.label }}
+                    </label>
+
+                    <input
+                        type="{{ field.field.widget.input_type }}"
+                        name="{{ field.html_name }}"
+                        id="{{ field.id_for_label }}"
+                        class="w-full rounded-lg border border-gray-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100"
+                        required
+                    >
+
+                    {% for error in field.errors %}
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit"
+                    class="w-full rounded-lg bg-stone-900 px-5 py-3 font-semibold text-white transition hover:bg-amber-700">
+                Log In
+            </button>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-stone-600">
+            Don't have an account?
+            <a href="{% url 'register' %}"
+               class="font-semibold text-amber-700 hover:underline">
+                Create an account
+            </a>
+        </p>
+
+    </div>
+</section>
+{% endblock content %}
