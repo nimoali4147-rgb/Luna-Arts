@@ -1,8 +1,6 @@
-
 from django.contrib import admin
-from django.urls import path, include
+from .models import Tag, Photo, PhotoReaction
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('photo_gallery.urls')),
-]
+admin.site.register(Tag)
+admin.site.register(Photo)
+admin.site.register(PhotoReaction)
