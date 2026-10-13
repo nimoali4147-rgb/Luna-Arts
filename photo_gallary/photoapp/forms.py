@@ -7,14 +7,37 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(attrs={
-            'class': 'w-full rounded-lg border-2 border-gray-300 p-3', 
-            'placeholder': 'Enter your email'
+            'placeholder': 'Enter your email',
         })
-    ) 
+    )
 
     class Meta:
         model = User
-        field = ['username', 'email', 'password' ]
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        input_class = (
+            'w-full rounded-lg border border-gray-300 '
+            'bg-stone-50 px-4 py-3 text-sm text-stone-900 '
+            'outline-none transition '
+            'focus:border-amber-600 focus:ring-2 '
+            'focus:ring-amber-100'
+        )
+
+        placeholders = {
+            'username': 'Choose a username',
+            'email': 'Enter your email address',
+            'password1': 'Create a password',
+            'password2': 'Confirm your password',
+        }
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': input_class,
+                'placeholder': placeholders.get(name, ''),
+            })
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()
@@ -25,3 +48,34 @@ class RegisterForm(UserCreationForm):
             )
 
         return email
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': (
+                    'w-full rounded-xl border border-stone-200 '
+                    'bg-stone-50 px-4 py-3.5 text-sm text-stone-900 '
+                    'transition duration-200 '
+                    'placeholder:text-stone-400 '
+                    'hover:border-stone-300 '
+                    'focus:border-amber-600 focus:bg-white '
+                    'focus:outline-none focus:ring-4 focus:ring-amber-100'
+                ),
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': (
+                    'w-full rounded-xl border border-stone-200 '
+                    'bg-stone-50 px-4 py-3.5 text-sm text-stone-900 '
+                    'transition duration-200 '
+                    'placeholder:text-stone-400 '
+                    'hover:border-stone-300 '
+                    'focus:border-amber-600 focus:bg-white '
+                    'focus:outline-none focus:ring-4 focus:ring-amber-100'
+                ),
+            }),
+        }
