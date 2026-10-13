@@ -31,6 +31,33 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
+
+class PhotoReaction(models.Model):
+    LIKE = 'like'
+    DISLIKE = 'dislike'
+
+    REACTION_CHOICES = [
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike'),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='photo_reactions'
+    )
+
+    photo = models.ForeignKey(
+        Photo,
+        on_delete=models.CASCADE,
+        related_name='reactions'
+    )
+
+    reaction = models.CharField(
+        max_length=10,
+        choices=REACTION_CHOICES
+    )
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
