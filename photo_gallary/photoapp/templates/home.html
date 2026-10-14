@@ -5,57 +5,214 @@
 
 {% block content %}
 
-<section class="text-blue-950 ">
-    <div class="max-w-7xl mx-auto px-6 py-12 md:py-32">
+<!-- Hero Section -->
+<section class="text-blue-950">
+    <div class="mx-auto max-w-7xl px-6 py-20 md:py-32">
 
-        <p class="text-gold-400 font-bold text-2xl uppercase tracking-[0.1em] mb-6">
-            Welcome to Luna Art
+        <p class="mb-6 text-2xl font-bold uppercase tracking-widest text-amber-600">
+            Welcome to Luma Art
         </p>
 
-        <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+        <h1 class="font-display text-4xl font-bold leading-tight md:text-6xl lg:text-7xl">
             Discover the beauty
-            <span class="text-gold-400"> through art</span>
+            <span class="text-amber-600"> through art</span>
         </h1>
 
-        <p class="mt-6 text-gray-900 text-lg leading-8 max-w-2xl">
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-stone-700 md:text-xl">
             Explore beautiful photographs, creative portraits,
             and inspiring artworks from talented creators.
             Find the stories behind every image.
         </p>
 
         <a href="#gallery"
-           class="inline-block mt-9 bg-gold-400 hover:bg-gold-500 text-black font-semibold px-8 py-3 rounded-md">
+           class="mt-9 inline-block rounded-lg bg-amber-500 px-8 py-3 font-semibold text-stone-950 transition hover:bg-amber-600">
             Explore Gallery →
         </a>
 
     </div>
 </section>
 
-<section id="gallery" class="max-w-7xl mx-auto px-6 py-20">
 
-    <p class="text-gold-600 text-sm font-semibold uppercase tracking-[0.2em]">
-        Curated Collection
-    </p>
+<!-- Gallery Section -->
+<section id="gallery" class="mx-auto max-w-7xl px-6 py-16 md:py-20">
 
-    <h2 class="font-display text-3xl md:text-4xl font-bold mt-3">
-        Explore Our Gallery
-    </h2>
-
-    <p class="mt-4 text-gray-600 max-w-2xl">
-        A collection of moments, perspectives, and creativity
-        waiting to be discovered.
-    </p>
-
-    <div class="border border-dashed border-stone-300 rounded-xl p-12 md:p-20 text-center mt-8">
-
-        <h3 class="font-display text-2xl font-bold">
-            Art is coming soon
-        </h3>
-
-        <p class="mt-3 text-gray-500">
-            Our photo collection will appear here once we connect
-            the gallery to the database.
+    <div class="mb-10">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">
+            Curated Collection
         </p>
+
+        <h2 class="mt-3 font-display text-3xl font-bold text-stone-900 md:text-4xl">
+            Explore Our Gallery
+        </h2>
+
+        <p class="mt-4 max-w-2xl leading-7 text-stone-600 md:text-lg">
+            A collection of moments, perspectives, and creativity
+            waiting to be discovered.
+        </p>
+    </div>
+
+  
+    <!-- Tag Filter Dropdown -->
+    <div class="mb-10">
+        <label for="tag-filter"
+            class="mb-3 block text-sm font-semibold uppercase tracking-wider text-stone-700">
+            Explore by Category
+        </label>
+
+     <div class="flex flex-wrap items-center gap-4">
+
+        <!-- All Photos -->
+        <a href="{% url 'home' %}#gallery"
+           class="rounded-full bg-stone-900 px-6 py-3 font-semibold text-white transition hover:bg-stone-700">
+            All Photos
+        </a>
+
+        <!-- Tags Dropdown -->
+        <form method="get"
+              id="tag-filter-form"
+              class="flex flex-wrap items-center gap-3">
+
+            <select
+                id="tag-filter"
+                name="tag"
+                onchange="if(this.value) window.location.href=this.value"
+                class="min-w-64 cursor-pointer rounded-xl border border-stone-300 bg-white px-5 py-3 text-stone-800 shadow-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100">
+
+                <option value="">Choose a category</option>
+
+                {% for tag in tags %}
+                    <option
+                        value="{% url 'filter_tag' tag.id %}"
+                        {% if selected_tag.id == tag.id %}selected{% endif %}>
+                        {{ tag.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+</div>
+
+
+    <!-- Photo Count -->
+    <div class="mb-6 flex items-center justify-between gap-4">
+        {% if selected_tag %}
+            <h3 class="text-lg font-semibold text-stone-800">
+                {{ selected_tag.name }} Photos
+            </h3>
+        {% else %}
+            <h3 class="text-lg font-semibold text-stone-800">
+                All Artwork
+            </h3>
+        {% endif %}
+
+        <p class="text-sm text-stone-500">
+            {{ photos|length }} photo{{ photos|length|pluralize }}
+        </p>
+    </div>
+
+
+    <!-- Photo Cards -->
+    <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+        {% for photo in photos %}
+
+            <article class="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+
+                <!-- Photo Image -->
+                <a href="{% url 'photo_detail' photo.id %}"
+                   class="block overflow-hidden bg-stone-100">
+
+                    <img
+                        src="{{ photo.image.url }}"
+                        alt="{{ photo.title }}"
+                        class="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+                        loading="lazy"
+                    >
+
+                </a>
+
+
+                <!-- Photo Information -->
+                <div class="p-5">
+
+                    <h3 class="text-xl font-bold text-stone-900 transition group-hover:text-amber-700">
+                        <a href="{% url 'photo_detail' photo.id %}">
+                            {{ photo.title }}
+                        </a>
+                    </h3>
+
+                    {% if photo.description %}
+                        <p class="mt-3 text-sm leading-6 text-stone-600">
+                            {{ photo.description|truncatewords:20 }}
+                        </p>
+                    {% endif %}
+
+
+                    <!-- Tags -->
+                    {% with photo_tags=photo.tags.all %}
+                        {% if photo_tags %}
+                            <div class="mt-4 flex flex-wrap gap-2">
+
+                                {% for tag in photo_tags %}
+                                    <a href="{% url 'filter_tag' tag.id %}"
+                                       class="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-900 transition hover:bg-amber-200">
+                                        {{ tag.name }}
+                                    </a>
+                                {% endfor %}
+
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+
+                    <!-- Upload Information -->
+                    {% if photo.uploaded_by %}
+                        <p class="mt-5 border-t border-stone-100 pt-4 text-xs text-stone-500">
+                            Uploaded by {{ photo.uploaded_by.username }}
+                        </p>
+                    {% endif %}
+
+
+                    <!-- View Details -->
+                    <a href="{% url 'photo_detail' photo.id %}"
+                       class="mt-5 inline-flex items-center gap-2 font-semibold text-amber-700 transition hover:text-amber-900">
+                        View Photo
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <!-- Empty Gallery -->
+            <div class="col-span-full rounded-2xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
+
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-3xl">
+                    ♡
+                </div>
+
+                <h3 class="mt-5 text-2xl font-bold text-stone-900">
+                    No photos found
+                </h3>
+
+                <p class="mx-auto mt-3 max-w-md leading-7 text-stone-600">
+                    There are no photos in this category yet.
+                    Explore all our artwork or check back later.
+                </p>
+
+                <a href="{% url 'home' %}#gallery"
+                   class="mt-6 inline-block rounded-lg bg-stone-900 px-6 py-3 font-semibold text-white transition hover:bg-stone-700">
+                    View All Photos
+                </a>
+
+            </div>
+
+        {% endfor %}
 
     </div>
 
