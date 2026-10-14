@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import UserProfile
 
 
 class RegisterForm(UserCreationForm):
@@ -76,6 +77,25 @@ class ProfileUpdateForm(forms.ModelForm):
                     'hover:border-stone-300 '
                     'focus:border-amber-600 focus:bg-white '
                     'focus:outline-none focus:ring-4 focus:ring-amber-100'
+                ),
+            }),
+        }
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'rows': 4,
+                'maxlength': 500,
+                'placeholder': 'Tell us a little about yourself...',
+                'class': (
+                    'w-full rounded-xl border border-stone-200 '
+                    'bg-stone-50 px-4 py-3 text-sm text-stone-900 '
+                    'focus:border-amber-600 focus:outline-none '
+                    'focus:ring-4 focus:ring-amber-100'
                 ),
             }),
         }
