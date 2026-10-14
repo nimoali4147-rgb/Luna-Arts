@@ -1,0 +1,119 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ photo.title }} | Luma Art{% endblock title %}
+
+{% block content %}
+
+<section class="mx-auto max-w-5xl px-6 py-12">
+
+    <!-- Back to Gallery -->
+    <a href="{% url 'home' %}#gallery"
+       class="font-medium text-amber-700 hover:underline">
+        ← Back to Gallery
+    </a>
+
+    <!-- Photo Card -->
+    <article class="mt-8 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-lg">
+
+        <!-- Photo Image -->
+        <img
+            src="{{ photo.image.url }}"
+            alt="{{ photo.title }}"
+            class="max-h-[650px] w-full bg-stone-100 object-contain"
+        >
+
+        <!-- Photo Information -->
+        <div class="p-6 md:p-10">
+
+            <h1 class="text-3xl font-bold text-stone-900 md:text-4xl">
+                {{ photo.title }}
+            </h1>
+
+            {% if photo.description %}
+                <p class="mt-5 text-lg leading-8 text-stone-600">
+                    {{ photo.description }}
+                </p>
+            {% endif %}
+
+            {% if photo.uploaded_by %}
+                <p class="mt-5 text-sm text-stone-500">
+                    Uploaded by {{ photo.uploaded_by.username }}
+                </p>
+            {% endif %}
+
+            <!-- Photo Tags -->
+            {% if photo.tags.all %}
+                <div class="mt-6 flex flex-wrap gap-2">
+
+                    {% for tag in photo.tags.all %}
+                        <a
+                            href="{% url 'filter_tag' tag.id %}"
+                            class="rounded-full bg-amber-100 px-4 py-2 text-sm font-medium text-amber-900 transition hover:bg-amber-200">
+                            {{ tag.name }}
+                        </a>
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+           
+<!-- Photo Reactions -->
+<div class="mt-8 border-t border-stone-200 pt-6">
+
+    <h2 class="text-xl font-bold text-stone-900">
+        What do you think about this photo?
+    </h2>
+
+    <div class="mt-5 flex flex-wrap gap-4">
+
+        {% if user.is_authenticated %}
+
+            <form
+                method="post"
+                action="{% url 'photo_reaction' photo.id %}"
+                class="flex flex-wrap gap-4">
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    name="reaction"
+                    value="like"
+                    class="rounded-xl bg-green-100 px-6 py-4 font-semibold text-green-800 transition hover:bg-green-200">
+                    👍 {{ likes_count }} Likes
+                </button>
+
+                <button
+                    type="submit"
+                    name="reaction"
+                    value="dislike"
+                    class="rounded-xl bg-red-100 px-6 py-4 font-semibold text-red-800 transition hover:bg-red-200">
+                    👎 {{ dislikes_count }} Dislikes
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <p class="text-stone-600">
+                <a href="{% url 'login' %}"
+                   class="font-semibold text-amber-700 hover:underline">
+                    Log in
+                </a>
+                to like or dislike this photo.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+        </div>
+
+    </article>
+
+</section>
+
+{% endblock content %}
