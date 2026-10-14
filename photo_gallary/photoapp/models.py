@@ -14,11 +14,13 @@ class Photo(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='photos/')
+
     tags = models.ManyToManyField(
         Tag,
         related_name='photos',
         blank=True
     )
+
     uploaded_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -26,6 +28,7 @@ class Photo(models.Model):
         blank=True,
         related_name='uploaded_photos'
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -68,3 +71,19 @@ class PhotoReaction(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.photo} - {self.reaction}'
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+
+    bio = models.TextField(
+        blank=True,
+        max_length=500
+    )
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
